@@ -1,0 +1,5 @@
+datasource:
+  db:
+    username: ""
+    password: ""
+    url: "jdbc:h2:./database"
