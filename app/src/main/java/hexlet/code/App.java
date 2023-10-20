@@ -2,19 +2,22 @@ package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import gg.jte.resolve.ResourceCodeResolver;
+import hexlet.code.controllers.RootController;
+import hexlet.code.controllers.UrlController;
 import hexlet.code.repository.BaseRepository;
 import io.javalin.Javalin;
-import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import io.javalin.rendering.template.JavalinThymeleaf;
+import gg.jte.ContentType;
+import gg.jte.TemplateEngine;
+import io.javalin.rendering.template.JavalinJte;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
+
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class App {
     private static final String JDBC_URL_H2 = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1";
@@ -33,19 +36,23 @@ public class App {
     }
 
     private static void addRoutes(Javalin app) {
-        app.get("/", ctx -> ctx.render("startPage.html"));
+        app.routes(() -> {
+            path("urls", () -> {
+                get(UrlController::listUrls);
+                post(UrlController::addUrl);
+                path("{id}", () -> {
+                    get(UrlController::show);
+                    path("checks", () -> post(UrlController::show));
+                });
+            });
+            path("/", () -> get(RootController.welcome));
+        });
     }
 
-    private static TemplateEngine getTemplateEngine() {
-        TemplateEngine templateEngine = new TemplateEngine();
-
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("/templates/");
-
-        templateEngine.addTemplateResolver(templateResolver);
-        templateEngine.addDialect(new LayoutDialect());
-        templateEngine.addDialect(new Java8TimeDialect());
-
+    private static TemplateEngine createTemplateEngine() {
+        ClassLoader classLoader = App.class.getClassLoader();
+        ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
+        TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html);
         return templateEngine;
     }
 
@@ -71,7 +78,7 @@ public class App {
                 config.plugins.enableDevLogging();
             }
             config.staticFiles.enableWebjars();
-            JavalinThymeleaf.init(getTemplateEngine());
+            JavalinJte.init(createTemplateEngine());
         });
 
         addRoutes(app);
