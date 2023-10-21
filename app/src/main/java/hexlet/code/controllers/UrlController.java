@@ -30,19 +30,19 @@ public final class UrlController {
         if (parsedUrl == null) {
             ctx.sessionAttribute("flash", "Incorrect URL");
             ctx.sessionAttribute("flash-type", "danger");
-            ctx.redirect("/");
+            RootController.welcome(ctx);
             return;
         }
         if (UrlRepository.existsByName(parsedUrl)) {
             ctx.sessionAttribute("flash", "Page already exists");
             ctx.sessionAttribute("flash-type", "info");
-            ctx.redirect("/urls");
+            listUrls(ctx);
             return;
         }
             ctx.sessionAttribute("flash", "Page added successfully");
             ctx.sessionAttribute("flash-type", "success");
             UrlRepository.save(new Url(parsedUrl, sqlTimestamp));
-            ctx.redirect("/urls");
+            listUrls(ctx);
     }
     public static String parseUrl(String inputUrl) {
         try {
