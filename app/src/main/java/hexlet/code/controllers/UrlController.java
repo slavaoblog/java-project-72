@@ -39,11 +39,12 @@ public final class UrlController {
             listUrls(ctx);
             return;
         }
-            ctx.sessionAttribute("flash", "Page added successfully");
-            ctx.sessionAttribute("flash-type", "success");
-            UrlRepository.save(new Url(parsedUrl, sqlTimestamp));
-            listUrls(ctx);
+        ctx.sessionAttribute("flash", "Page added successfully");
+        ctx.sessionAttribute("flash-type", "success");
+        UrlRepository.save(new Url(parsedUrl, sqlTimestamp));
+        listUrls(ctx);
     }
+
     public static String parseUrl(String inputUrl) {
         try {
             URL url = new URL(inputUrl);

@@ -17,7 +17,9 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-import static io.javalin.apibuilder.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.path;
 
 public class App {
     private static final String JDBC_URL_H2 = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1";
@@ -67,7 +69,7 @@ public class App {
                 .collect(Collectors.joining("\n"));
 
         try (var connection = dataSource.getConnection();
-        var statement = connection.createStatement()) {
+             var statement = connection.createStatement()) {
             statement.execute(sql);
         }
         BaseRepository.dataSource = dataSource;
@@ -84,7 +86,7 @@ public class App {
 
         app.before(ctx -> ctx.attribute("ctx", ctx));
 
-    return app;
+        return app;
     }
 
     public static void main(String[] args) throws SQLException, IOException {

@@ -28,7 +28,7 @@ public class UrlRepository extends BaseRepository {
     public static Optional<Url> find(Long id) throws SQLException {
         var sql = "SELECT * FROM urls WHERE id = ?";
         try (var conn = dataSource.getConnection();
-        var stmt = conn.prepareStatement(sql)) {
+             var stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             var resultSet = stmt.executeQuery();
             if (resultSet.next()) {
@@ -55,7 +55,7 @@ public class UrlRepository extends BaseRepository {
     public static List<Url> getEntities() throws SQLException {
         var sql = "SELECT * FROM urls";
         try (var conn = dataSource.getConnection();
-        var stmt = conn.prepareStatement(sql)) {
+             var stmt = conn.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();
             var result = new ArrayList<Url>();
             while (resultSet.next()) {
