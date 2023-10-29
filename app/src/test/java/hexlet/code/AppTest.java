@@ -23,15 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AppTest {
 
     private static Javalin app;
-    private static MockWebServer server;
+    private static MockWebServer mockWebServer;
 
     @BeforeAll
     public static void beforeAll() throws IOException {
-        server = new MockWebServer();
+        mockWebServer = new MockWebServer();
 
         String expectedBody = Files.readString(Path.of("src/test/resources/test.html"));
-        server.enqueue(new MockResponse().setBody(expectedBody));
-        server.start();
+        mockWebServer.enqueue(new MockResponse().setBody(expectedBody));
+        mockWebServer.start();
     }
 
     @BeforeEach
@@ -39,17 +39,9 @@ class AppTest {
         app = App.getApp();
     }
 
-//    @AfterEach
-//    public void AfterEach() throws SQLException {
-//        try (var connection = BaseRepository.dataSource.getConnection();
-//             var statement = connection.createStatement()) {
-//            statement.execute("DROP ALL OBJECTS DELETE FILES");
-//        }
-//    }
-
     @AfterAll
     public static void afterAll() throws IOException {
-        server.shutdown();
+        mockWebServer.shutdown();
     }
 
     @Test
@@ -148,7 +140,7 @@ class AppTest {
 
     @Test
     void testCheckUrl() throws SQLException {
-        String serverUrl = server.url("/").toString();
+        String serverUrl = mockWebServer.url("/").toString();
         String correctServerUrl = serverUrl.substring(0, serverUrl.length() - 1);
 
         JavalinTest.test(app, (server, client) -> {
