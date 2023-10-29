@@ -64,6 +64,7 @@ public class UrlRepository extends BaseRepository {
                 var createdAt = resultSet.getTimestamp("created_at");
                 var url = new Url(name, createdAt);
                 url.setId(id);
+                url.setChecks(UrlCheckRepository.getEntitiesByUrlId(id));
                 result.add(url);
             }
             return result;

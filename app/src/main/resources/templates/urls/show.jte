@@ -19,13 +19,13 @@ content = @`
             </tr>
             <tr>
                 <td>Date</td>
-                <td>${page.getUrl().getCreatedAt().toLocalDateTime().toString()}</td>
+                <td>${page.getUrl().getFormattedCreatedAt()}</td>
             </tr>
             </tbody>
         </table>
 
         <h2 class="mt-5">Checklist</h2>
-        <form method="post" action="/urls/${page.getUrl().getId()}/checks}">
+        <form method="post" action="/urls/${page.getUrl().getId()}/checks">
             <button type="submit" class="btn btn-primary">Run check</button>
         </form>
 
@@ -33,21 +33,24 @@ content = @`
             <thead>
             <tr><th class="col-1">ID</th>
                 <th class="col-1">Response code</th>
-                <th>title</th>
-                <th>h1</th>
-                <th>description</th>
+                <th>Title</th>
+                <th>H1</th>
+                <th>Description</th>
                 <th class="col-2">Date of check</th>
             </tr></thead>
             <tbody>
-            <!-- each check -->
+            @if(page.getUrl().getChecks() != null)
+            @for(var urlCheck : page.getUrl().getChecks())
             <tr>
-                <td>{getId()}</td>
-                <td>{getStatusCode()}</td>
-                <td>{#strings.abbreviate(getTitle(), 20)}</td>
-                <td>{#strings.abbreviate(getH1(), 20)}</td>
-                <td>{#strings.abbreviate(getDescription(), 50)}</td>
-                <td>{#temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}</td>
+                <td>${urlCheck.getId()}</td>
+                <td>${urlCheck.getStatusCode()}</td>
+                <td>${urlCheck.getTitle()}</td>
+                <td>${urlCheck.getH1()}</td>
+                <td>${urlCheck.getDescription()}</td>
+                <td>${urlCheck.getFormattedCreatedAt()}</td>
             </tr>
+            @endfor
+            @endif
             </tbody>
         </table>
     </div>

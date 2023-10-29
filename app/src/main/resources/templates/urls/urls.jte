@@ -28,8 +28,16 @@ content = @`
                     <tr>
                         <td>${url.getId()}</td>
                         <td><a href="/urls/${url.getId()}">${url.getName()}</a></td>
-                        <td>Last check</td>
-                        <td>Response code</td>
+                        <td>
+                            @if(url.getFormattedLastCheckDate() != null)
+                            ${url.getFormattedLastCheckDate()}
+                            @endif
+                        </td>
+                        <td>
+                            @if(url.getLastCheckStatus() != null)
+                            ${url.getLastCheckStatus()}
+                            @endif
+                        </td>
                     </tr>
                     @endfor
                     </tbody>

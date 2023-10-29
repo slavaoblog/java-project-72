@@ -44,7 +44,7 @@ public class App {
                 post(UrlController::addUrl);
                 path("{id}", () -> {
                     get(UrlController::show);
-                    path("checks", () -> post(UrlController::show));
+                    path("checks", () -> post(UrlController::check));
                 });
             });
             path("/", () -> get(RootController::welcome));
