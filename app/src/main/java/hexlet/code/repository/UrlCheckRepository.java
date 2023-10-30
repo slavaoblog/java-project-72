@@ -4,7 +4,7 @@ import hexlet.code.model.UrlCheck;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UrlCheckRepository extends BaseRepository {
@@ -30,11 +30,11 @@ public class UrlCheckRepository extends BaseRepository {
     }
 
     public static List<UrlCheck> getEntitiesByUrlId(Long urlId) throws SQLException {
-        var sql = "SELECT * FROM url_checks WHERE url_id = " + urlId;
+        var sql = "SELECT * FROM url_checks WHERE url_id = " + urlId + "ORDER BY created_at DESC";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();
-            var result = new ArrayList<UrlCheck>();
+            var result = new LinkedList<UrlCheck>();
             while (resultSet.next()) {
                 var id = resultSet.getLong("id");
                 var statusCode = resultSet.getInt("status_code");
