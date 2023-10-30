@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 @Getter
 @Setter
-public class UrlCheck {
+public final class UrlCheck {
     private long id;
     private int statusCode;
     private String title;

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Setter
 @Getter
-public class Url {
+public final class Url {
     private long id;
     private String name;
     private Timestamp createdAt;
